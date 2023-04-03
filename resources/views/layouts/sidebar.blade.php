@@ -34,21 +34,24 @@
                 <span>Pengajuan Cuti</span></a>
         </li>
     @endif
-    <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
-        <a class="nav-link" href="/home">
-            <i class="fas fa-home"></i>
-            <span>Dashboard</span></a>
-    </li>
-    <li class="nav-item {{Request::is('jurnal*') ? 'active' : ''}}">
-        <a class="nav-link" href="/jurnal">
-            <i class="fas fa-clipboard"></i>
-            <span>Jurnal Harian</span></a>
-    </li>
-    <li class="nav-item {{Request::is('cuti*') ? 'active' : ''}}">
-        <a class="nav-link" href="/cuti">
-            <i class="fas fa-calendar"></i>
-            <span>Pengajuan Cuti</span></a>
-    </li>
+
+    @if (Auth::user()->role_id == 4)
+        <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
+            <a class="nav-link" href="/home">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item {{Request::is('jurnal*') ? 'active' : ''}}">
+            <a class="nav-link" href="/jurnal">
+                <i class="fas fa-clipboard"></i>
+                <span>Jurnal Harian</span></a>
+        </li>
+        <li class="nav-item {{Request::is('cuti*') ? 'active' : ''}}">
+            <a class="nav-link" href="/cuti">
+                <i class="fas fa-calendar"></i>
+                <span>Pengajuan Cuti</span></a>
+        </li>
+    @endif
 
 
     <!-- Divider -->

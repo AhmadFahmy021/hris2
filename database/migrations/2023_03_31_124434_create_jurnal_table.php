@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('nama');
             $table->date('tanggal');
+            $table->enum('status', ['selesai','tertunda']);
             $table->timestamps();
         });
     }

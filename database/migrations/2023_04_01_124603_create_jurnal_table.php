@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('profile_id')->constrained('profile')->onUpdate('cascade')->onDelete('cascade');
+            $table->text('alasan');
             $table->date('mulai');
             $table->date('akhir');
             $table->enum('status', ['setuju','tolak']);
