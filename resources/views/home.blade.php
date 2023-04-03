@@ -239,3 +239,6 @@
 });
 </script>
 @endsection
+@section('karyawan')
+    dasdasd
+@endsection
