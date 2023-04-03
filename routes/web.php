@@ -30,12 +30,13 @@ Route::get('logout', [LoginController::class,'logout']);
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+// Route Profile
+Route::resource('profile', ProfileController::class)->middleware(['auth']);
+//Route Jurnal
+Route::resource('jurnal', JurnalController::class)->middleware(['auth']);
+
 Route::middleware(['auth','hrd'])->group(function() {
 
-    // Route Profile
-    Route::resource('profile', ProfileController::class)->middleware(['hrd']);
-    //Route Jurnal
-    Route::resource('jurnal', JurnalController::class)->middleware(['hrd']);
     // Route Karyawan
     Route::get('karyawan', [KaryawanController::class, 'index']);
     Route::get('karyawan/{id}/detail', [KaryawanController::class, 'detail']);

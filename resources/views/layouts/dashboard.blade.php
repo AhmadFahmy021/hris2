@@ -51,8 +51,10 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    @if (Auth::user()->role_id == '2')
+                    @if (Auth::user()->role_id == 2)
                         @yield('dashboard')
+                    @elseif (Auth::user()->role_id == 4)
+                        @yield('karyawan')
                     @endif
 
                 </div>
