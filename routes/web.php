@@ -26,6 +26,7 @@ Route::get('/', function () {
 
 // Route login dan register
 Auth::routes();
+Route::get('logout', [LoginController::class,'logout']);
 
 Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
