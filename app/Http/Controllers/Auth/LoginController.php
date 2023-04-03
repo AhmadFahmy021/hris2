@@ -39,15 +39,15 @@ class LoginController extends Controller
         return 'username';
     }
 
-    // public function logout(Request $request){
-    //     Auth::logout();
+    public function logout(Request $request){
+        Auth::logout();
  
-    //     $request->session()->invalidate();
+        $request->session()->invalidate();
      
-    //     $request->session()->regenerateToken();
+        $request->session()->regenerateToken();
      
-    //     return redirect('/');
-    // }
+        return redirect('/');
+    }
 
     public function __construct()
     {
