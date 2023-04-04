@@ -28,27 +28,40 @@ Route::get('/', function () {
 Auth::routes();
 Route::get('logout', [LoginController::class,'logout']);
 
-Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route Profile
 Route::resource('profile', ProfileController::class)->middleware(['auth']);
 //Route Jurnal
-Route::resource('jurnal', JurnalController::class)->middleware(['auth']);
+Route::resource('jurnal', JurnalController::class)->middleware(['auth','profile']);
 
-Route::middleware(['auth','hrd'])->group(function() {
+Route::middleware(['auth','profile'])->group(function() {
 
-    // Route Karyawan
-    Route::get('karyawan', [KaryawanController::class, 'index']);
-    Route::get('karyawan/{id}/detail', [KaryawanController::class, 'detail']);
-    Route::get('karyawan/{id}/edit', [KaryawanController::class, 'edit']);
-    Route::post('karyawan/{id}', [KaryawanController::class, 'update']);
-    Route::post('karyawan/{id}/delete', [KaryawanController::class, 'delete']);
-    // Route Cuti
-    Route::get('cuti', [CutiController::class, 'index']);
-    Route::get('cuti/setuju', [CutiController::class, 'index_setuju']);
-    Route::get('cuti/tolak', [CutiController::class, 'index_tolak']);
-    Route::get('cuti/{id}/setuju', [CutiController::class, 'setuju'])->middleware('hrd');
-    Route::get('cuti/{id}/tolak', [CutiController::class, 'tolak'])->middleware('hrd');
+    Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+// Hak Akses untuk dashboard HRD
+ Route::middleware(['hrd'])->group(function() {
+    
+     // Route Karyawan
+     Route::get('karyawan', [KaryawanController::class, 'index']);
+     Route::get('karyawan/{id}/detail', [KaryawanController::class, 'detail']);
+     Route::get('karyawan/{id}/edit', [KaryawanController::class, 'edit']);
+     Route::post('karyawan/{id}', [KaryawanController::class, 'update']);
+     Route::post('karyawan/{id}/delete', [KaryawanController::class, 'delete']);
+     // Route Cuti
+     Route::get('cuti', [CutiController::class, 'index']);
+     Route::get('cuti', [CutiController::class, 'index_cuti']);
+     Route::get('cuti/create', [CutiController::class, 'create']);
+     Route::post('cuti', [CutiController::class, 'store']);
+     Route::get('cuti/setuju', [CutiController::class, 'index_setuju']);
+     Route::get('cuti/tolak', [CutiController::class, 'index_tolak']);
+     Route::get('cuti/{id}/setuju', [CutiController::class, 'setuju'])->middleware('hrd');
+     Route::get('cuti/{id}/tolak', [CutiController::class, 'tolak'])->middleware('hrd');
+ });
+// Hak akses untuk karyawan
+ Route::get('pengcuti', [CutiController::class, 'index']);
+ Route::get('pengcuti/create', [CutiController::class, 'create']);
+ Route::post('pengcuti', [CutiController::class, 'store']);
 });
 
 

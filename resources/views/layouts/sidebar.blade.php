@@ -46,8 +46,8 @@
                 <i class="fas fa-clipboard"></i>
                 <span>Jurnal Harian</span></a>
         </li>
-        <li class="nav-item {{Request::is('cuti*') ? 'active' : ''}}">
-            <a class="nav-link" href="/cuti">
+        <li class="nav-item {{Request::is('pengcuti*') ? 'active' : ''}}">
+            <a class="nav-link" href="/pengcuti">
                 <i class="fas fa-calendar"></i>
                 <span>Pengajuan Cuti</span></a>
         </li>

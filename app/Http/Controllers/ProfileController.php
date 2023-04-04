@@ -28,7 +28,9 @@ class ProfileController extends Controller
     public function create()
     {
         //Route create
-        return view('profile.create');
+        $null = Profile::all()->where('user_id', Auth::user()->id)->count();
+        // dd($null);
+        return view('profile.create', compact('null'));
     }
 
     /**
