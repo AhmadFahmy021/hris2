@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('alasan');
             $table->date('mulai');
             $table->date('akhir');
-            $table->enum('status', ['setuju','tolak']);
+            $table->enum('status', ['setuju','tolak'])->nullable();
             $table->timestamps();
         });
     }

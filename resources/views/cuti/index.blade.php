@@ -3,7 +3,7 @@
 @section('dashboard')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Cuti</h1>
-    <p><a href="">Dashboard</a> / Cuti </p>
+    <p><a href="/home">Dashboard</a> / Cuti </p>
 </div>
 
 <div class="row">
@@ -23,6 +23,7 @@
                         <a class="dropdown-item text-success" href="/cuti/setuju"><i class="fas fa-calendar-check"></i> Pengajuan yang di setujui</a>
                         <hr class="border border-2 opacity-50">
                         <a class="dropdown-item" href="/cuti/create"><i class="fas fa-calendar-plus"></i> Ajukan Cuti</a>
+                        <a class="dropdown-item" href="/cuti/hrd"><i class="fas fa-calendar"></i> Daftar Cuti</a>
                     </div>
                 </div>
             </div>
@@ -33,7 +34,7 @@
                             <tr>
                                 <th>No.</th>
                                 <th>Nama</th>
-                                <th>Divisi</th>
+                                <th>Alasan</th>
                                 <th>Jabatan</th>
                                 <th>Tanggal Mulai</th>
                                 <th>Tanggal Berakhir</th>
@@ -45,7 +46,7 @@
                             <tr>
                                 <td>{{$loop->iteration}}</td>
                                 <td>{{$dt->user->name}}</td>
-                                <td>{{$dt->profile->divisi}}</td>
+                                <td>{{$dt->alasan}}</td>
                                 <td>{{$dt->profile->jabatan}}</td>
                                 <td>{{date('d-m-Y', strtotime( $dt->mulai))}}</td>
                                 <td>{{date('d-m-Y', strtotime( $dt->akhir))}}</td>
@@ -69,6 +70,7 @@
 @section('karyawan')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Cuti</h1>
+    <p><a href="/home">Dashboard</a> / Cuti </p>
 </div>
 
 <div class="row">
@@ -107,12 +109,9 @@
                                 <td>{{$dt->alasan}}</td>
                                 <td>{{date('d-m-Y', strtotime( $dt->mulai))}}</td>
                                 <td>{{date('d-m-Y', strtotime( $dt->akhir))}}</td>
-                                @php
-                                    $id = Crypt::encrypt($dt->id);
-                                @endphp
                                 <td>
-                                    <a href="/cuti/{{$id}}/edit" class="btn btn-primary"><i class="fas fa-pen"></i> Edit</a>
-                                    <a href="/cuti/{{$id}}/delete" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
+                                    <a href="/pengcuti/{{Crypt::encrypt($dt->id)}}/edit" class="btn btn-primary"><i class="fas fa-pen"></i> Edit</a>
+                                    <a href="/pengcuti/{{Crypt::encrypt($dt->id)}}/delete" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a>
                                 </td>
                             </tr>
                             @endforeach

@@ -21,9 +21,9 @@ class CutiController extends Controller
             return view('cuti.index', compact('data'));
         }
     }
-    public function index_cuti_hrd(){
+    public function index_cuti(){
         $data = Cuti::all()->where('user_id', Auth::user()->id);
-        return view('cuti.index', compact('data'));
+        return view('cuti.cutihrd', compact('data'));
     }
 
     public function create(){
@@ -42,10 +42,11 @@ class CutiController extends Controller
         $validasi['user_id'] = $user_id;
         $validasi['profile_id'] = $profile_id->id;
         // dd($validasi['profile_id']);
-        Cuti::create($validasi);
-        if(Auth::user()->id == 2){
-            return redirect('/cuti');
-        } elseif(Auth::user()->id == 4){
+        if(Auth::user()->role_id == '2'){
+            Cuti::create($validasi);
+            return redirect('/cuti/hrd');
+        } elseif(Auth::user()->role_id == '4'){
+            Cuti::create($validasi);
             return redirect('/pengcuti');
         }
     }
@@ -73,5 +74,28 @@ class CutiController extends Controller
             $status = ['status' => 'tolak'];
             $data->update($status);
             return redirect('/cuti');
+    }
+
+    public function edit($id){
+        $id = Crypt::decrypt($id);
+        $data = Cuti::findOrFail($id);
+        // dd($data);
+        return view('cuti.edit', compact('data'));
+    }
+    public function update(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $data = Cuti::findOrFail($id);
+        $form = $request->validate([
+            'alasan' => 'required',
+            'mulai' => 'required',
+            'akhir' => 'required',
+        ]);
+        $data->update($form);
+        
+        if(Auth::user()->role_id == 2){
+            return redirect('/cuti/hrd');
+        } else if(Auth::user()->role_id == 4){
+            return redirect('/pengcuti');
+        }
     }
 }
