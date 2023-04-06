@@ -69,7 +69,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <!-- Pending Requests Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
                             <div class="card border-left-warning shadow h-100 py-2">
@@ -124,12 +123,11 @@
                         </div>
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
+                        <div class="col-xl-4 col-lg-5" >
+                            <div class="card shadow-lg mb-4" style="height: 493px; ">
                                 <!-- Card Header - Dropdown -->
-                                <div
-                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Rating Kerja Karyawan</h6>
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -146,20 +144,13 @@
                                     </div>
                                 </div>
                                 <!-- Card Body -->
-                                <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
-                                    </div>
-                                    <div class="mt-4 text-center small">
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
-                                        </span>
-                                        <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
-                                        </span>
+                                <div class="card-body" style="overflow: auto;">
+                                    <div class="chart" >
+                                        @foreach ($jurnal as $jr)
+                                            <div class="alert alert-primary" role="alert">
+                                                {{$jr->name}}
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -173,7 +164,7 @@
         type: 'column'
     },
     title: {
-        text: 'Monthly Average Rainfall'
+        text: 'Chart Tugas Yang Sudah Selesai'
     },
     subtitle: {
         text: 'Source: WorldClimate.com'
