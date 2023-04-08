@@ -34,14 +34,19 @@ class HomeController extends Controller
         $cuti_tolak = Cuti::all()->where('status', 'tolak')->count();
         $cuti_setuju = Cuti::all()->where('status', 'setuju')->count();
         // $jurnal = DB::table('jurnal')->distinct()->groupBy('user_id'); 
-        $jurnal =  DB::table('users')
-        ->leftJoin('jurnal', 'users.id', '=', 'jurnal.user_id')
-        ->select('users.*', DB::raw('COUNT(jurnal.id) as journal_count'))
-        ->groupBy('users.id')
-        ->orderByDesc('journal_count','desc')
-        ->get();
         // dd($jurnal);
         // dd([$kar,$cuti,$cuti_tolak,$cuti_setuju]);
-        return view('home',compact(['kar','cuti','cuti_tolak',  'cuti_setuju','jurnal']));
+        if(Jurnal::all() == null){
+            $jurnal = Jurnal::all()->count();
+            return view('home',compact(['kar','cuti','cuti_tolak',  'cuti_setuju','jurnal']));
+        } else {
+            $jurnal =  DB::table('users')
+            ->leftJoin('jurnal', 'users.id', '=', 'jurnal.user_id')
+            ->select('users.*', DB::raw('COUNT(jurnal.id) as journal_count'))
+            ->groupBy('users.id')
+            ->orderByDesc('journal_count','desc')
+            ->get();
+            return view('home',compact(['kar','cuti','cuti_tolak',  'cuti_setuju','jurnal']));
+        }
     }
 }
