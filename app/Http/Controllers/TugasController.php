@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\Tugas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 
 class TugasController extends Controller
 {
@@ -14,8 +16,9 @@ class TugasController extends Controller
     public function index()
     {
         //
-        $data = User::all();
-        return view('tugas.index', compact('data'));
+        $data = Tugas::all();
+        // dd($divisi);
+        return view('tugas.index',compact(['data']));
     }
 
     /**
@@ -23,7 +26,8 @@ class TugasController extends Controller
      */
     public function create()
     {
-        return view('tugas.create');
+        $data = User::all();
+        return view('tugas.create',compact('data'));
     }
 
     /**
@@ -32,6 +36,19 @@ class TugasController extends Controller
     public function store(Request $request)
     {
         //
+        // dd($request->nama);
+        $request->validate([
+            'nama' => 'required',
+            'tugas' => 'required',
+        ]);
+        $data = [
+            'user_id' => $request->nama,
+            'tugas' => $request->tugas,
+            'selesai' => $request->selesai,
+        ];
+        // dd($data);
+        Tugas::create($data);
+        return redirect('/tugas');
     }
 
     /**
@@ -45,24 +62,53 @@ class TugasController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tugas $tugas)
+    public function edit($id)
     {
         //
+        $id = Crypt::decrypt($id);
+        $tugas = Tugas::findOrFail($id);
+        $data = User::all();
+        // dd($tugas);
+        // dd($data);
+        return view('tugas.edit',compact('data','tugas'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tugas $tugas)
+    public function update(Request $request, $tugas)
     {
-        //
+        
+        $id = Crypt::decrypt($tugas);
+        $tugas = Tugas::findOrFail($id);
+
+        $request->validate([
+            'nama' => 'required',
+            'tugas' => 'required',
+        ]);
+        $form = [
+            'user_id' => $request->nama,
+            'tugas' => $request->tugas,
+            'selesai' => $request->selesai
+        ];
+        $tugas->update($form);
+        return redirect('/tugas');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tugas $tugas)
+    public function destroy($tugas)
     {
         //
+        $id = Crypt::decrypt($tugas);
+        $tugas = Tugas::findOrFail($id);
+
+        $tugas->delete();
+        return redirect('/tugas');
+    }
+
+    public function tim(){
+        return view('tugas.tim');
     }
 }
