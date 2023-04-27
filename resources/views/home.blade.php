@@ -3,7 +3,7 @@
 @section('dashboard')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    <span class="countdown"></span>
+    <span class="gaji"></span>
 </div>
 
 <!-- Content Row -->
@@ -218,14 +218,14 @@
 </script>
 <script>
     // set tanggal target
-    const targetDate = new Date('2023-04-18T12:00:00');
+    const targetDate = new Date('2023-04-18');
 
     // fungsi untuk menghitung mundur waktu
     function countdown() {
     // hitung selisih waktu antara target dan saat ini
     const now = new Date().getTime();
     const diff = targetDate - now;
-    console.log(diff);
+    // console.log(diff);
 
     // hitung sisa waktu dalam hari, jam, menit, dan detik
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -234,7 +234,7 @@
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
     // tampilkan sisa waktu pada notifikasi
-    const countdownElem = document.querySelector('.countdown');
+    const countdownElem = document.querySelector('.gaji');
     countdownElem.innerHTML = `${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
     // cek jika hari target sama dengan hari sekarang, jika hari tidak sama dengan target maka lanjutkan perhitungan, dan jika target 
@@ -242,7 +242,7 @@
     if(new Date().getDate() === new Date(targetDate).getDate())
     {
         // cetak keterangan yang menunjukkan hari pengambilan gaji
-        console.log('Waktu Gajian');
+        // console.log('Waktu Gajian');
         countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji karyawan';
 
         }else if (diff < 0) {
