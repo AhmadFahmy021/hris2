@@ -41,8 +41,6 @@ class ProfileController extends Controller
         //Route 
         $validasi = $request->validate([
             'hp' => 'required',
-            'divisi' => 'required',
-            'jabatan' => 'required',
             'kota' => 'required',
             'kec' => 'required',
             'pos' => 'required',

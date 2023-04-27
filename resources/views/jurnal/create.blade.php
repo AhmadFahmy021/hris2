@@ -11,11 +11,25 @@
             @csrf
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama Kegiatan</label>
-                <input type="text" name="nama" class="form-control" id="nama">
+                <input type="text" name="nama" class="form-control @error('nama')
+                    is-invalid
+                @enderror" id="nama">
+                @error('nama')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="tanggal" class="form-label">Tanggal Kegiatan</label>
-                <input type="date" name="tanggal" class="form-control" id="nama">
+                <input type="date" name="tanggal" class="form-control @error('tanggal')
+                is-invalid
+            @enderror" id="nama">
+            @error('tanggal')
+                    <div class="invalid-feedback">
+                        {{$message}}
+                    </div>
+                @enderror
             </div>
             <div class="mb3">
                 <label for="" class="form-label">Status</label>

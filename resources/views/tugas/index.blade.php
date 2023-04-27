@@ -11,7 +11,7 @@
         <div class="dropdown-menu">
           <a class="dropdown-header">Pilih Tugas Secara : </a>
           <a class="dropdown-item" href="/tugas/create">Tugas Untuk Setiap Karyawan</a>
-          <a class="dropdown-item" href="#">Tugas Untuk Setiap Divisi</a>
+          <a class="dropdown-item" href="/tugass/tim/create">Tugas Untuk Setiap Divisi</a>
         </div>
     </div>
 </div>
@@ -20,7 +20,7 @@
     <div class="container">
         <div class="card">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Pembagian Tugas Setiap Karyawan</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Tugas Karyawan</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -28,11 +28,8 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
                         aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="/tugass/tim">Lihat Tugas Untuk Seluruh Divisi</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        <div class="dropdown-header">Halaman :</div>
+                        <a class="dropdown-item" href="/tugass/tim">Tugas Divisi</a>
                     </div>
                 </div>
             </div>
@@ -65,7 +62,7 @@
                                         <form action="/tugas/{{Crypt::encrypt($dt->id)}}" method="post" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash text-white-50"></i> Delete</button>
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin mengapus tugas {{$dt->tugas}}')"><i class="fas fa-trash text-white-50"></i> Delete</button>
                                         </form>
                                     </td>
                                 </tr>

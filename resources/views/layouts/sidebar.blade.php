@@ -38,6 +38,11 @@
                 <i class="fas fa-clipboard-check"></i>
                 <span>Pembagian Tugas</span></a>
         </li>
+        <li class="nav-item {{Request::is('divisi*') ? 'active' : ''}}">
+            <a class="nav-link" href="/divisi">
+                <i class="fas fa-users"></i>
+                <span>Kelola Divisi</span></a>
+        </li>
     @endif
 
     @if (Auth::user()->role_id == 4)

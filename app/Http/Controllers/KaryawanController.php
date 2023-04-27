@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 // use App\Models\Karyawan;
 
+use App\Models\Divisi;
 use App\Models\Jurnal;
 use App\Models\Profile;
 use App\Models\User;
@@ -15,43 +16,32 @@ class KaryawanController extends Controller
 {
     //
     public function index(){
-        $user = User::all();
-        // dd($user->id);
-        $data = Profile::all();
-        // dd($data->user->name);
-        // foreach($data as $dt){
-        //     dd($dt->user->name);
-        // }
+        $user = Auth::user()->id;
+        $data = Profile::all()->where('user_id','!=', $user);
         return view('karyawan.index', compact('data'));
     }
     public function detail($id){
         $id = Crypt::decrypt($id);
         $data = Profile::findOrFail($id);
-        // dd($data);
-        // foreach($data as $dt){
-        //     dd($dt->user->name);
-        // }
+        
         return view('karyawan.detail', compact('data'));
     }
     public function edit($id){
         $id = Crypt::decrypt($id);
         $data = Profile::findOrFail($id);
+        $div = Divisi::all();
         // dd($data);
-        // foreach($data as $dt){
-        //     dd($dt->user->name);
-        // }
-        return view('karyawan.edit', compact('data'));
+        
+        return view('karyawan.edit', compact('data','div'));
     }
     public function update(Request $request, $id){
         $id = Crypt::decrypt($id);
         $data = Profile::findOrFail($id);
         // dd($request);
-        // foreach($data as $dt){
-        //     dd($dt->user->name);
-        // }
+        
         $form = [
-            'divisi' => $request->post('divisi'),
-            'jabatan' => $request->post('jabatan'),
+            'divisi_id' => $request->divisi,
+            'jabatan' => $request->jabatan,
         ];
         $data->update($form);
         return redirect('/karyawan');
@@ -62,9 +52,7 @@ class KaryawanController extends Controller
         $jurnal = Jurnal::findOrFail($data->user_id);
         $user = User::findOrFail($data->user_id);
         // dd($user);
-        // foreach($data as $dt){
-        //     dd($dt->user->name);
-        // }
+       
         $data->delete();
         $user->delete();
         if($data == null || $jurnal == null){

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CutiController;
+use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\ProfileController;
@@ -78,7 +79,15 @@ Route::middleware(['auth'])->group(function() {
         // Route Tugas
         Route::resource('/tugas', TugasController::class);
         Route::get('/tugass/tim', [TugasController::class, 'tim']);
+        Route::get('/tugass/tim/create', [TugasController::class, 'tim_create']);
+        Route::get('/tugass/tim/{id}/edit', [TugasController::class, 'tim_edit']);
+        Route::get('/tugass/tim/{id}/delete', [TugasController::class, 'tim_destroy']);
+        Route::post('/tugass/tim/', [TugasController::class, 'tim_store']);
+        Route::post('/tugass/tim/{id}', [TugasController::class, 'tim_update']);
+        Route::post('/tugass/tim/{id}', [TugasController::class, 'tim_update']);
         
+        // Route Tim
+        Route::resource('/divisi', DivisiController::class);
     });
 });
 

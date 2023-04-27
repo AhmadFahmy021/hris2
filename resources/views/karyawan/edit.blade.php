@@ -20,7 +20,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="divisi" class="form-label">Divisi</label>
-                    <input type="text" class="form-control" id="divisi" name="divisi" value="{{$data->divisi}}">
+                    <select class="form-control" name="divisi">
+                        @foreach ($div as $d)                            
+                            <option value="{{$d->id}}" @if ($data->divisi_id == $d->id)
+                                selected
+                            @endif>{{$d->divisi}}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Jabatan</label>

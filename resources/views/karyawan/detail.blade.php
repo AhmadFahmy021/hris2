@@ -15,7 +15,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="nama" class="form-label">Divisi</label>
-                    <input type="text" class="form-control" id="nama" value="{{$data->divisi}}" disabled>
+                    @if ($data->divisi_id === null)
+                        
+                    <input type="text" class="form-control" id="nama" value="" disabled>
+                    @else
+                    
+                    <input type="text" class="form-control" id="nama" value="{{$data->divisi->divisi}}" disabled>
+                    @endif
                 </div>
                 <div class="mb-3">
                     <label for="nama" class="form-label">Jabatan</label>
