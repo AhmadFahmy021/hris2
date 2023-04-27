@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Divisi;
 use App\Models\Profile;
 use App\Models\Tugas;
 use App\Models\User;
@@ -16,7 +17,7 @@ class TugasController extends Controller
     public function index()
     {
         //
-        $data = Tugas::all();
+        $data = Tugas::all()->where('user_id', '!=', null);
         // dd($divisi);
         return view('tugas.index',compact(['data']));
     }
@@ -103,12 +104,63 @@ class TugasController extends Controller
         //
         $id = Crypt::decrypt($tugas);
         $tugas = Tugas::findOrFail($id);
-
+        // dd($id);
         $tugas->delete();
         return redirect('/tugas');
     }
 
     public function tim(){
-        return view('tugas.tim');
+        $data = Tugas::all()->where('divisi_id', '!=', null);
+        return view('tugas.tim', compact('data'));
+    }
+    public function tim_create(){
+        $data = Divisi::all();
+        return view('tugas.create_tim', compact('data'));
+    }
+    public function tim_store(Request $request){
+        // dd($request);
+        $request->validate([
+            'divisi' => 'required',
+            'tugas' => 'required'
+        ]);
+        $form = [
+            'divisi_id' => $request->divisi,
+            'tugas' => $request->tugas,
+            'selesai' => $request->selesai,
+        ];
+        Tugas::create($form);
+        return redirect('/tugass/tim');
+    }
+    public function tim_edit($id){
+        $id = Crypt::decrypt($id);
+        $ed = Tugas::findOrFail($id);
+        $data = Divisi::all();
+        // dd($ed);
+        return view('tugas.edit_tim', compact(['ed','data']));
+        
+    }
+    public function tim_update(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $ed = Tugas::findOrFail($id);
+        
+        $request->validate([
+            'divisi' => 'required',
+            'tugas' => 'required',
+        ]);
+        $form = [
+            'divisi_id' => $request->divisi,
+            'tugas' => $request->tugas,
+            'selesai' => $request->selesai,
+        ];
+        $ed->update($form);
+        return redirect('/tugass/tim');
+        
+    }
+
+    public function tim_destroy($id){
+        $id = Crypt::decrypt($id);
+        $ed = Tugas::findOrFail($id);
+        $ed->delete();
+        return redirect('/tugass/tim');
     }
 }

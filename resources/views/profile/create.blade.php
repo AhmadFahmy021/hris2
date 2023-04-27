@@ -23,28 +23,6 @@
                         @enderror
                     </div>
                     <div class="mb-3">
-                        <label for="divisi" class="form-label">Divisi</label>
-                        <input type="text" name="divisi" class="form-control @error('divisi')
-                            is-invalid
-                        @enderror" id="divisi" placeholder="" value="{{old('divisi')}}">
-                        @error('divisi')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" name="jabatan" class="form-control @error('jabatan')
-                            is-invalid
-                        @enderror" id="jabatan" placeholder="" value="{{old('jabatan')}}">
-                        @error('jabatan')
-                            <div class="invalid-feedbback">
-                                {{$message}}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
                         <label for="kota" class="form-label">Kota / Kabupaten</label>
                         <input type="text" name="kota" class="form-control @error('kota')
                             is-invalid
@@ -115,28 +93,6 @@
                         @enderror" id="hp" placeholder="" value="{{old('hp')}}">
                         @error('hp')
                             <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="divisi" class="form-label">Divisi</label>
-                        <input type="text" name="divisi" class="form-control @error('divisi')
-                            is-invalid
-                        @enderror" id="divisi" placeholder="" value="{{old('divisi')}}">
-                        @error('divisi')
-                            <div class="invalid-feedback">
-                                {{$message}}
-                            </div>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label for="jabatan" class="form-label">Jabatan</label>
-                        <input type="text" name="jabatan" class="form-control @error('jabatan')
-                            is-invalid
-                        @enderror" id="jabatan" placeholder="" value="{{old('jabatan')}}">
-                        @error('jabatan')
-                            <div class="invalid-feedbback">
                                 {{$message}}
                             </div>
                         @enderror

@@ -12,4 +12,7 @@ class Karyawan extends Model
     public function profile(){
         return $this->belongsTo(Profile::class);
     }
+    public function divisi(){
+        return $this->belongsTo(Divisi::class);
+    }
 }

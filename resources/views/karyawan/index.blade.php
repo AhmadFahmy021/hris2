@@ -32,9 +32,13 @@
                                 @foreach ($data as $dt)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
-                                    <td>{{$dt->user->name}}</td>
-                                    <td>{{$dt->divisi}}</td>
-                                    <td>{{$dt->jabatan}}</td>
+                                    <td title="{{$dt->user->name}}">{{Str::limit($dt->user->name, 10, '...')}}</td>
+                                    @if ($dt->divisi_id === null)
+                                    <td></td>
+                                    @else
+                                    <td>{{$dt->divisi->divisi}}</td>
+                                    @endif
+                                    <td title="{{$dt->jabatan}}">{{Str::limit($dt->jabatan, 10, '...')}}</td>
                                     <td>{{$dt->hp}}</td>
                                     @php
                                         $id = Crypt::encrypt($dt->id);

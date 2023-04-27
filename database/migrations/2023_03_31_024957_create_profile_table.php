@@ -19,8 +19,8 @@ return new class extends Migration
             $table->string('kota',100);
             $table->string('kec',100);
             $table->integer('pos');
-            $table->string('divisi',50);
-            $table->string('jabatan',50);
+            $table->foreignId('divisi_id')->nullable()->constrained('divisi')->onUpdate('cascade')->onDelete('cascade');
+            $table->string('jabatan',50)->nullable();
             $table->timestamps();
         });
     }

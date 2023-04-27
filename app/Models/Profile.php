@@ -16,4 +16,7 @@ class Profile extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function divisi(){
+        return $this->belongsTo(Divisi::class);
+    }
 }

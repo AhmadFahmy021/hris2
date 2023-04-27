@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('tugas');
-            $table->string('tim');
+            $table->foreignId('divisi_id')->nullable()->constrained('divisi')->onUpdate('cascade')->onDelete('cascade');
+            $table->date('selesai')->nullable();
             $table->enum('status',['selesai','tunda'])->nullable();
             $table->timestamps();
         });

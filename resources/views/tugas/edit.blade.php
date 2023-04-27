@@ -10,7 +10,7 @@
         <form action="/tugas/{{Crypt::encrypt($tugas->id)}}" method="POST">
             @csrf
             @method('PUT')
-            {{$tugas->user_id}}
+            {{-- {{$tugas->user_id}} --}}
             <div class="mb-3">
                 <label for="nama" class="form-label">Nama</label>
                 <select class="custom-select" name="nama">
