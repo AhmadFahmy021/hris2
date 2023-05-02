@@ -70,7 +70,7 @@
 @section('karyawan')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Cuti</h1>
-    <p><a href="/home">Dashboard</a> / Cuti </p>
+    <a href="/pengcuti/create" class="btn btn-primary btn-sm"><i class="fas fa-plus text-white-50"></i> Ajukan Cuti</a>
 </div>
 
 <div class="row">
@@ -78,17 +78,6 @@
         <div class="card">
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                 <h6 class="m-0 font-weight-bold text-primary">Daftar Pengajuan Cuti</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Halaman:</div>
-                        <a class="dropdown-item" href="/pengcuti/create"><i class="fas fa-calendar-plus"></i> Ajukan Cuti</a>
-                    </div>
-                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">

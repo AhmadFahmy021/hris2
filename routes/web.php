@@ -85,6 +85,8 @@ Route::middleware(['auth'])->group(function() {
         Route::post('/tugass/tim/', [TugasController::class, 'tim_store']);
         Route::post('/tugass/tim/{id}', [TugasController::class, 'tim_update']);
         Route::post('/tugass/tim/{id}', [TugasController::class, 'tim_update']);
+        Route::get('tugass/{id}/selesai', [TugasController::class, 'tugas_selesai']);
+        Route::get('tugass/{id}/tunda', [TugasController::class, 'tugas_tunda']);
         
         // Route Tim
         Route::resource('/divisi', DivisiController::class);

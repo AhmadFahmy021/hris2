@@ -34,7 +34,11 @@
                                         <form action="/divisi/{{Crypt::encrypt($it->id)}}" method="post" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash text-white-50"></i> Delete</button>
+                                            @if ($profile)
+                                                <button type="submit" class="btn btn-danger" disabled><i class="fas fa-trash text-white-50"></i> Delete</button>
+                                            @else
+                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash text-white-50"></i> Delete</button>
+                                            @endif
                                         </form>
                                     </td>
                                 </tr>

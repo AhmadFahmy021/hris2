@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Divisi;
+use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 
@@ -15,7 +16,10 @@ class DivisiController extends Controller
     {
         //
         $data = Divisi::all();
-        return view('divisi.index', compact('data'));
+        
+        $profile = Profile::all()->where('divisi_id','=',$data);
+        dd($data);
+        return view('divisi.index', compact('data','profile'));
     }
 
     /**
