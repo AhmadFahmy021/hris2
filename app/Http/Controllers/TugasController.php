@@ -7,6 +7,7 @@ use App\Models\Profile;
 use App\Models\Tugas;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class TugasController extends Controller
@@ -16,8 +17,12 @@ class TugasController extends Controller
      */
     public function index()
     {
-        //
-        $data = Tugas::all()->where('user_id', '!=', null);
+        if(Auth::user()->role_id == 2){
+            $data = Tugas::all()->where('user_id', '!=', null);
+        } else if(Auth::user()->role_id == 4){
+            $data = Tugas::all()->where('user_id','=',Auth::user()->id);
+            // dd($data);
+        }
         // dd($divisi);
         return view('tugas.index',compact(['data']));
     }
@@ -79,7 +84,7 @@ class TugasController extends Controller
      */
     public function update(Request $request, $tugas)
     {
-        
+
         $id = Crypt::decrypt($tugas);
         $tugas = Tugas::findOrFail($id);
 
@@ -137,12 +142,12 @@ class TugasController extends Controller
         $data = Divisi::all();
         // dd($ed);
         return view('tugas.edit_tim', compact(['ed','data']));
-        
+
     }
     public function tim_update(Request $request, $id){
         $id = Crypt::decrypt($id);
         $ed = Tugas::findOrFail($id);
-        
+
         $request->validate([
             'divisi' => 'required',
             'tugas' => 'required',
@@ -154,7 +159,7 @@ class TugasController extends Controller
         ];
         $ed->update($form);
         return redirect('/tugass/tim');
-        
+
     }
 
     public function tim_destroy($id){
@@ -162,5 +167,26 @@ class TugasController extends Controller
         $ed = Tugas::findOrFail($id);
         $ed->delete();
         return redirect('/tugass/tim');
+    }
+
+    public function tugas_selesai(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $data = Tugas::findOrFail($id);
+
+        $form = ['status' => 'selesai'];
+        $data->update($form);
+        // dd($form);
+
+        return redirect('/tugas');
+    }
+    public function tugas_tunda(Request $request, $id){
+        $id = Crypt::decrypt($id);
+        $data = Tugas::findOrFail($id);
+
+        $form = ['status' => 'tunda'];
+        $data->update($form);
+        // dd($form);
+
+        return redirect('/tugas');
     }
 }

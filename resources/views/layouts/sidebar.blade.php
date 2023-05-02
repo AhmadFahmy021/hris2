@@ -12,7 +12,7 @@
     <hr class="sidebar-divider my-0">
 
     <!-- Nav Item - Dashboard -->
-    @if (Auth::user()->role_id == 2)        
+    @if (Auth::user()->role_id == 2)
         <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
             <a class="nav-link" href="/home">
                 <i class="fas fa-home"></i>
@@ -60,6 +60,16 @@
             <a class="nav-link" href="/pengcuti">
                 <i class="fas fa-calendar"></i>
                 <span>Pengajuan Cuti</span></a>
+        </li>
+        <li class="nav-item {{Request::is('tugas*') ? 'active' : ''}}">
+            <a class="nav-link" href="/tugas">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Tugas Individu</span></a>
+        </li>
+        <li class="nav-item {{Request::is('tugas/tim*') ? 'active' : ''}}">
+            <a class="nav-link" href="/tugas/tim">
+                <i class="fas fa-users"></i>
+                <span>Tugas Divisi</span></a>
         </li>
     @endif
 

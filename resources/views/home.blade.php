@@ -96,7 +96,7 @@
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Chart Tugas Yang Di Selesaikan Oleh Karyawan</h6>
                 <div class="dropdown no-arrow">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -155,7 +155,8 @@
         </div>
     </div>
 </div>
-                    
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
     Highcharts.chart('container', {
@@ -217,8 +218,10 @@
         });
 </script>
 <script>
+    Push.Permission.request();
+
     // set tanggal target
-    const targetDate = new Date('2023-04-18');
+    const targetDate = new Date('2023-04-28');
 
     // fungsi untuk menghitung mundur waktu
     function countdown() {
@@ -237,13 +240,22 @@
     const countdownElem = document.querySelector('.gaji');
     countdownElem.innerHTML = `${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
-    // cek jika hari target sama dengan hari sekarang, jika hari tidak sama dengan target maka lanjutkan perhitungan, dan jika target 
+    // cek jika hari target sama dengan hari sekarang, jika hari tidak sama dengan target maka lanjutkan perhitungan, dan jika target
         // if(new Date().getMinutes() === new Date(targetDate).getMinutes() && new Date().getHours() === new Date(targetDate).getHours()  && new Date().getDate() === new Date(targetDate).getDate())
     if(new Date().getDate() === new Date(targetDate).getDate())
     {
         // cetak keterangan yang menunjukkan hari pengambilan gaji
         // console.log('Waktu Gajian');
         countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji karyawan';
+        Push.create('Pembagian Gaji Karyawan Tiba', {
+            body: 'Sekarang waktu pembagian gaji telah tiba silahkan kirim gaji ke rekening masing - masing karyawan',
+            // timeout: 2400000,               // Timeout before notification closes automatically.
+            vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
+            onClick: function() {
+                // Callback for when the notification is clicked.
+                console.log(this);
+            }
+        });
 
         }else if (diff < 0) {
         // ubah tanggal target menjadi tanggal bulan depan
@@ -277,10 +289,12 @@
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                             Jumlah Jurnal
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">12</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{$jurnalkar}}
+                        </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -297,11 +311,11 @@
                             Jumlah Tugas
                         </div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">
-
+                            {{$tugas}}
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        <i class="fas fa-clipboard fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -320,13 +334,13 @@
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
                                 <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
-                                   
+                                    {{$cuti}}
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-calendar-times fa-2x text-gray-300"></i>
+                        <i class="fas fa-calendar fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -334,15 +348,15 @@
     </div>
     <!-- Pending Requests Card Example -->
     <div class="col-xl-3 col-md-6 mb-4">
-        <div class="card border-left-warning shadow h-100 py-2">
+        <div class="card border-left-success shadow h-100 py-2">
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
                             Jumlah Pengajuan Cuti Di Setujui
                         </div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">    
-
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            {{$cutiSetuju}}
                         </div>
                     </div>
                     <div class="col-auto">
@@ -356,38 +370,55 @@
 {{-- card --}}
 <div class="row">
 
-    <!-- Area Chart -->
-    <div class="col-xl-8 col-lg-7">
-        <div class="card shadow mb-4">
+    <!-- Daftar Tugas -->
+    <div class="col-xl-6 col-lg-7">
+        <div class="card shadow mb-4" style="height: 493px;">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                        aria-labelledby="dropdownMenuLink">
-                        <div class="dropdown-header">Dropdown Header:</div>
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </div>
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Tugas Individu</h6>
             </div>
             <!-- Card Body -->
-            <div class="card-body">
-                <div class="panel">
-                    <div id="container"></div>
+            <div class="card-body" style="overflow: auto;">
+                <div class="chart">
+                    @foreach ($tugasIndiv as $tI)
+                        <div class="alert alert-info alert-sm">
+                            @if ($tI->selesai == null)
+                                {{$tI->tugas}} | Tidak Terbatas
+                            @else
+                            {{$tI->tugas}} | {{date('d-M-Y', strtotime($tI->selesai)) }}
+                            @endif
+                        </div>
+                    @endforeach
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Pie Chart -->
-    <div class="col-xl-4 col-lg-5" >
+    <!-- Daftar Tugas Divisi -->
+    <div class="col-xl-6 col-lg-5" >
+        <div class="card shadow-lg mb-4" style="height: 493px; ">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Daftar Tugas Divisi</h6>
+            </div>
+            <!-- Card Body -->
+            <div class="card-body" style="overflow: auto;">
+                <div class="chart">
+                    @foreach ($tugasDiv as $td)
+                        <div class="alert alert-info alert-sm">
+                            @if ($td->selesai == null)
+                                {{$td->tugas}} | Tidak Terbatas
+                            @else
+                            {{$td->tugas}} | {{date('d-M-Y', strtotime($td->selesai)) }}
+                            @endif
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+    {{-- <div class="col-xl-4 col-lg-5" >
         <div class="card shadow-lg mb-4" style="height: 493px; ">
             <!-- Card Header - Dropdown -->
             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -396,17 +427,13 @@
             <!-- Card Body -->
             <div class="card-body" style="overflow: auto;">
                 <div class="chart" >
-                    @foreach ($jurnal as $jr)
-                        <div class="alert alert-primary" role="alert">
-                            {{$jr->name}}
-                        </div>
-                    @endforeach
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
+    
 </div>
-                    
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
     Highcharts.chart('container', {
