@@ -56,6 +56,8 @@
                         @yield('dashboard')
                     @elseif (Auth::user()->role_id == 4)
                         @yield('karyawan')
+                    @elseif (Auth::user()->role_id == 1)
+                        @yield('owner')
                     @endif
 
                 </div>

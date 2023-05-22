@@ -27,6 +27,13 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function seleksi(){
+        if(Auth::user()->role_id == 1){
+            return redirect('/homes');
+        } else{
+            return redirect('/home');
+        }
+    }
     /**
      * Show the application dashboard.
      *
@@ -145,5 +152,9 @@ class HomeController extends Controller
                 return view('home',$com);
             }
 
+    }
+    public function owner()
+    {
+        return view('homes');
     }
 }

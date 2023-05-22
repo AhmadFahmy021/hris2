@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\GajiController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PDFController;
@@ -47,10 +48,12 @@ Route::middleware(['auth'])->group(function() {
         Route::resource('jurnal', JurnalController::class);
         Route::get('jurnal/{id}/hapus', [JurnalController::class, 'destroy'])->name('jurnal.hapus');
         // Route Home
-        Route::get('home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+        Route::get('rute', [HomeController::class, 'seleksi']);
+        Route::get('home', [HomeController::class, 'index'])->name('home');
+        Route::get('/homes', [HomeController::class, 'owner']);
     
     
-        // Hak Akses untuk dashboard HRD
+        // Hak Akses untuk HRD
         Route::middleware(['hrd'])->group(function() {
             
             // Route Karyawan

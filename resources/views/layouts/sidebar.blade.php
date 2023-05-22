@@ -48,9 +48,43 @@
                 <i class="fas fa-money-bill-wave"></i>
                 <span>Kelola Gaji Karyawan</span></a>
         </li>
-    @endif
-
-    @if (Auth::user()->role_id == 4)
+    @elseif (Auth::user()->role_id == 1)
+        <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
+            <a class="nav-link" href="/home">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span></a>
+        </li>
+        <li class="nav-item {{Request::is('jurnal*') ? 'active' : ''}}">
+            <a class="nav-link" href="/jurnal">
+                <i class="fas fa-clipboard"></i>
+                <span>Jurnal Harian</span></a>
+        </li>
+        <li class="nav-item {{Request::is('karyawan*') ? 'active' : ''}}">
+            <a class="nav-link" href="/karyawan">
+                <i class="fas fa-user-tie"></i>
+                <span>Jumlah Karyawan</span></a>
+        </li>
+        <li class="nav-item {{Request::is('cuti*') ? 'active' : ''}}">
+            <a class="nav-link" href="/cuti">
+                <i class="fas fa-calendar"></i>
+                <span>Pengajuan Cuti</span></a>
+        </li>
+        <li class="nav-item {{Request::is('tugas*') ? 'active' : ''}}">
+            <a class="nav-link" href="/tugas">
+                <i class="fas fa-clipboard-check"></i>
+                <span>Pembagian Tugas</span></a>
+        </li>
+        <li class="nav-item {{Request::is('divisi*') ? 'active' : ''}}">
+            <a class="nav-link" href="/divisi">
+                <i class="fas fa-users"></i>
+                <span>Kelola Divisi</span></a>
+        </li>
+        <li class="nav-item {{Request::is('gaji*') ? 'active' : ''}}">
+            <a class="nav-link" href="/gaji">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Kelola Gaji Karyawan</span></a>
+        </li>
+    @elseif (Auth::user()->role_id == 4)
         <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
             <a class="nav-link" href="/home">
                 <i class="fas fa-home"></i>
