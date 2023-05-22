@@ -35,11 +35,18 @@ class HomeController extends Controller
     public function index()
     {
         // Query Untuk HRD
+            # Query code untuk jumlah dari karyawan
             $kar = Profile::all()->count();
+            # Query code untuk jumlah cuti dengan status kosong atau belum diberi izin 
             $cuti = Cuti::all()->where('status', null)->count();
+            # Query code untuk jumlah divisi yang telah di buat
             $divisi = Divisi::all()->count();
+            # Query code untuk jumlah tugas dengan status telah di selesaikan
             $tugas_selesai = Tugas::all()->where('status', 'selesai')->count();
-            $tugas = Tugas::all()->where('user_id','!=',null)->where('status','selesai');
+            # Query code untuk 
+            // $tugas = Tugas::all()->where('user_id','!=',null)->where('status','selesai')->count();
+            // dd($tugas);
+            # Query code untuk menampilkan jumlah tugas yang selesai di kerjakan
             $tgs = Tugas::where('status', 'selesai')->where('user_id','!=' ,'null')
             ->selectRaw('count(*) as jumlah, user_id')
             ->groupBy('user_id')
@@ -82,16 +89,60 @@ class HomeController extends Controller
             $tugas = Tugas::all()->where('user_id', Auth::user()->id)->count();
             $cuti = Cuti::all()->where('user_id', Auth::user()->id)->count();
             $cutiSetuju = Cuti::all()->where('user_id',Auth::user()->id AND 'status','setuju')->count();
-            $tugasIndiv = Tugas::all()->where('user_id','=', Auth::user()->id AND 'status','=',null OR 'status','=', 'tunda');
+            $tugasIndiv = Tugas::all()->where('user_id','=', Auth::user()->id );
             $div = Profile::all()->where('user_id',Auth::user()->id)->first();
             // dd($divisi->);
-            $tugasDiv = Tugas::all()->where('divisi_id','=',$div->divisi_id AND 'status','=',null OR 'status','=','tunda');
-
-            // dd($tugasIndiv);
+            $tugasDiv = Tugas::all()->where('divisi_id', '=', $div->divisi_id);
+            $gaji = Profile::all()->where('user_id',Auth::user()->id)->first();
+            //  Ambil tanggal sekarang
+            $now = date('Y-m-d');
+            $nowDay = date('d', strtotime($now));
+            $targetDate = DB::table('profile')->whereDay('date_gaji','>=',$nowDay)->min('date_gaji');
+            // dd($targetDate);
+            if($nowDay == 01){
+                $target = $now;
+                $target = [
+                    'nama' => 'Seluruh Karyawan',
+                    'date' => '2023-04-01'
+                ];
+            } else if($targetDate == null){
+                $target = [
+                    'nama' => 'Seluruh Karyawan',
+                    'date' => '2023-04-01',
+                ];
+                // dd($target['nama']);
+            }else{
+                $target = Profile::all()->where('date_gaji',$targetDate)->first();
+                // dd($target->date_gaji);
+                $target = [
+                    'nama' => $target->user->name,
+                    'date' => $target->date_gaji
+                ];
+                // dd($target);
+            }
+            $com = [
+                'kar' => $kar,
+                'cuti' => $cuti,
+                'divisi'=> $divisi,
+                'tugas_selesai' => $tugas_selesai,
+                'jurnal' => $jurnal,
+                'jurnalkar' => $jurnalkar,
+                'name' => $name,
+                'data' => $data,
+                'tugas' => $tugas,
+                'cutiSetuju' => $cutiSetuju,
+                'tugasIndiv' => $tugasIndiv,
+                'tugasDiv'=> $tugasDiv,
+                'gaji' => $gaji,
+                'nama' => $target['nama'],
+                'date' => $target['date'],
+            ];
+            // dd($gaji->date_gaji);
             if(Auth::user()->role_id == 2){
-                return view('home',compact(['kar','cuti','divisi',  'tugas_selesai','jurnal','name','data']));
+                // return view('home',compact(['kar','cuti','divisi',  'tugas_selesai','jurnal','name','data']));
+                return view('home',$com);
             } else if(Auth::user()->role_id == 4){
-                return view('home',compact(['kar','cuti','divisi',  'tugas_selesai','jurnal','jurnalkar','name','data','tugas','cutiSetuju','tugasIndiv','tugasDiv']));
+                return view('home',$com);
             }
 
     }

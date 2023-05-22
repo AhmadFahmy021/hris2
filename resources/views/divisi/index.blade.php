@@ -34,11 +34,7 @@
                                         <form action="/divisi/{{Crypt::encrypt($it->id)}}" method="post" class="d-inline">
                                             @csrf
                                             @method('DELETE')
-                                            @if ($profile)
-                                                <button type="submit" class="btn btn-danger" disabled><i class="fas fa-trash text-white-50"></i> Delete</button>
-                                            @else
-                                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash text-white-50"></i> Delete</button>
-                                            @endif
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Apakah anda yakin ingin menghapus data {{$it->divisi}} \nJika anda yakin ingin menghapus data {{$it->divisi}} silahkan cek apakah data sedang terpakai atau tidak')"><i class="fas fa-trash text-white-50" ></i> Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -50,4 +46,5 @@
         </div>
     </div>
 </div>
+@include('sweetalert::alert')
 @endsection

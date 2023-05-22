@@ -3,7 +3,7 @@
 @section('dashboard')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-    <span class="gaji"></span>
+    <span class="gaji" id="gaji" data-nama="{{$nama}}"  data-target="{{$date}}"></span>
 </div>
 
 <!-- Content Row -->
@@ -219,9 +219,13 @@
 </script>
 <script>
     Push.Permission.request();
-
+    // if()
+    const gaji = document.querySelector('#gaji') ;
+    const target = gaji.getAttribute('data-target');
+    const nama = gaji.getAttribute('data-nama');
+    // console.log(target);
     // set tanggal target
-    const targetDate = new Date('2023-04-28');
+    const targetDate = new Date(target);
 
     // fungsi untuk menghitung mundur waktu
     function countdown() {
@@ -241,13 +245,13 @@
     countdownElem.innerHTML = `${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
     // cek jika hari target sama dengan hari sekarang, jika hari tidak sama dengan target maka lanjutkan perhitungan, dan jika target
-        // if(new Date().getMinutes() === new Date(targetDate).getMinutes() && new Date().getHours() === new Date(targetDate).getHours()  && new Date().getDate() === new Date(targetDate).getDate())
     if(new Date().getDate() === new Date(targetDate).getDate())
     {
         // cetak keterangan yang menunjukkan hari pengambilan gaji
-        // console.log('Waktu Gajian');
-        countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji karyawan';
-        Push.create('Pembagian Gaji Karyawan Tiba', {
+        // console.log(nama);
+        if(nama == 'Seluruh Karyawan'){
+            countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji '+nama;
+            Push.create('Pembagian Gaji Karyawan Tiba', {
             body: 'Sekarang waktu pembagian gaji telah tiba silahkan kirim gaji ke rekening masing - masing karyawan',
             // timeout: 2400000,               // Timeout before notification closes automatically.
             vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
@@ -256,6 +260,19 @@
                 console.log(this);
             }
         });
+        } else{
+            countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji atas nama '+nama;
+            Push.create('Pembagian Gaji Karyawan Tiba', {
+            body: 'Sekarang waktu pembagian gaji telah tiba silahkan kirim gaji ke rekening atas nama '+nama,
+            // timeout: 2400000,               // Timeout before notification closes automatically.
+            vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
+            onClick: function() {
+                // Callback for when the notification is clicked.
+                console.log(this);
+            }
+        });
+        }
+        
 
         }else if (diff < 0) {
         // ubah tanggal target menjadi tanggal bulan depan
@@ -272,11 +289,14 @@
     // panggil fungsi hitung mundur
     countdown();
 
+ 
 </script>
 @endsection
 @section('karyawan')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <span class="gaji" id="gaj" data-tanggal="{{$gaji->date_gaji}}"></span>
+    <a href="/slip-gaji" target="_blank" hidden class="tmb btn btn-primary btn-sm"><i class="fas fa-download text-white-50"></i> Download Slip Gaji</a>
 </div>
 
 <div class="row">
@@ -382,10 +402,14 @@
                 <div class="chart">
                     @foreach ($tugasIndiv as $tI)
                         <div class="alert alert-info alert-sm">
-                            @if ($tI->selesai == null)
-                                {{$tI->tugas}} | Tidak Terbatas
+                            @if ($tI->selesai == null && $tI->status == null)
+                                {{$tI->tugas}} | Tidak Terbatas | Belum Dikerjakan
+                            @elseif($tI->selesai == null)
+                                {{$tI->tugas}} | Tidak Terbatas | {{$tI->status}}
+                            @elseif($tI->status == null)
+                                {{$tI->tugas}} | {{date('d-M-Y', strtotime($tI->selesai)) }} | Belum Dikerjakan
                             @else
-                            {{$tI->tugas}} | {{date('d-M-Y', strtotime($tI->selesai)) }}
+                                {{$tI->tugas}} | {{date('d-M-Y', strtotime($tI->selesai)) }} | {{$tI->status}}
                             @endif
                         </div>
                     @endforeach
@@ -405,13 +429,17 @@
             <div class="card-body" style="overflow: auto;">
                 <div class="chart">
                     @foreach ($tugasDiv as $td)
+                    @if ($td->divisi_id != null)                            
                         <div class="alert alert-info alert-sm">
-                            @if ($td->selesai == null)
-                                {{$td->tugas}} | Tidak Terbatas
+                            @if ($td->selesai == null && $td->status == null)
+                            {{$td->tugas}} | Tidak Terbatas | Belum Dikerjakan
+                            @elseif($td->status == null)
+                            {{$td->tugas}} | {{date('d-M-Y', strtotime($td->selesai)) }} | Belum Dikerjakan
                             @else
-                            {{$td->tugas}} | {{date('d-M-Y', strtotime($td->selesai)) }}
+                            {{$td->tugas}} | {{date('d-M-Y', strtotime($td->selesai)) }} | {{$td->status}}
                             @endif
                         </div>
+                    @endif
                     @endforeach
                 </div>
             </div>
@@ -433,77 +461,67 @@
     </div> --}}
     
 </div>
-
-<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
 <script>
-    Highcharts.chart('container', {
-            chart: {
-                type: 'column'
-            },
-            title: {
-                text: 'Chart Tugas Yang Sudah Selesai'
-            },
-            subtitle: {
-                text: 'Penyelesaian Tugas Oleh Karyawan'
-            },
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: ''
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                    '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                }
-            },
-            series: [{
-                name: 'Tokyo',
-                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4,
-                    194.1, 95.6, 54.4]
+    Push.Permission.request();
+    const btn = document.getElementById('gaj');
+    const date = btn.getAttribute('data-tanggal');
+    // console.log(date);
+    // set tanggal target
+    const targetDate = new Date(date);
+    // console.log(targetDate);
+    // fungsi untuk menghitung mundur waktu
+    function countdown() {
+    // hitung selisih waktu antara target dan saat ini
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+    // console.log(diff);
+    
+    // hitung sisa waktu dalam hari, jam, menit, dan detik
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+    
+    // tampilkan sisa waktu pada notifikasi
+    const countdownElem = document.querySelector('.gaji');
+    countdownElem.innerHTML = `${days.toString().padStart(2, "0")}:${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
-            }, {
-                name: 'New York',
-                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5,
-                    106.6, 92.3]
-
-            }, {
-                name: 'London',
-                data: [48.9, 38.8, 39.3, 41.4, 47.0, 48.3, 59.0, 59.6, 52.4, 65.2, 59.3,
-                    51.2]
-
-            }, {
-                name: 'Berlin',
-                data: [42.4, 33.2, 34.5, 39.7, 52.6, 75.5, 57.4, 60.4, 47.6, 39.1, 46.8,
-                    51.1]
-
-            }]
+    // cek jika hari target sama dengan hari sekarang, jika hari tidak sama dengan target maka lanjutkan perhitungan, dan jika target
+    // if(new Date().getMinutes() === new Date(targetDate).getMinutes() && new Date().getHours() === new Date(targetDate).getHours()  && new Date().getDate() === new Date(targetDate).getDate())
+    Push.Permission.request();
+    if(new Date().getDate() === new Date(targetDate).getDate())
+    {
+        // cetak keterangan yang menunjukkan hari pengambilan gaji
+        // console.log('Waktu Gajian');
+        // countdownElem.innerHTML = 'Hari ini waktunya pembagian gaji karyawan';
+        var down = document.querySelector('.tmb');
+        down.removeAttribute("hidden");
+        countdownElem.setAttribute("hidden",true);
+        Push.create('Hari Ini Waktu Gajian Telah Tiba', {
+            body: 'Silahkan Cek Rekening Jika Sudah Masuk Silahkan Download Slip Gaji',
+            // timeout: 2400000,               // Timeout before notification closes automatically.
+            vibrate: [100, 100, 100],    // An array of vibration pulses for mobile devices.
+            onClick: function() {
+                // Callback for when the notification is clicked.
+                console.log(this);
+            }
         });
+
+        }else if (diff < 0) {
+        // ubah tanggal target menjadi tanggal bulan depan
+        targetDate.setMonth(targetDate.getMonth() + 1);
+
+        // restart hitungan mundur
+        setTimeout(countdown, 0);
+    } else {
+        // lanjutkan hitungan mundur
+        setTimeout(countdown, 1000);
+    }
+    }
+
+    // panggil fungsi hitung mundur
+    countdown();
+
 </script>
 @endsection

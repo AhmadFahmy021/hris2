@@ -46,10 +46,11 @@
                                     <td>
                                         <a href="/karyawan/{{$id}}/detail" class="btn btn-success"><i class="fas fa-eye"></i> Detail</a>
                                         <a href="/karyawan/{{$id}}/edit" class="btn btn-primary"><i class="fas fa-pen"></i> Edit</a>
-                                        <form action="/karyawan/{{$id}}/delete" method="post" class="d-inline">
+                                        <a href="/karyawan/{{$id}}/delete" id="delete" class="btn btn-danger"><i class="fas fa-trash text-white-50"></i> Delete</a>
+                                        {{-- <form action="/karyawan/{{$id}}/delete" method="post" class="d-inline">
                                             @csrf
                                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</button>
-                                        </form>
+                                        </form> --}}
                                         {{-- <a href="" class="btn btn-danger"><i class="fas fa-trash"></i> Delete</a> --}}
                                     </td>
                                 </tr>
@@ -62,4 +63,5 @@
         </div>
     </div>
 </div>
+@include('sweetalert::alert')
 @endsection

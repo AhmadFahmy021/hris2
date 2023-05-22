@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
+// use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use RealRashid\SweetAlert\Facades\Alert;
+// use Illuminate\Console\View\Components\Alert;
 
 class JurnalController extends Controller
 {
@@ -19,6 +22,9 @@ class JurnalController extends Controller
         // dd($data);
         // $data = $data->toJson(JSON_PRETTY_PRINT);
         // dd($api);
+        $title = "Yakin Data Akan Dihapus?";
+        $text = "Data Yang Akan Di Hapus Tidak Dapat Di Kembalikan";
+        confirmDelete($title, $text);
         return view('jurnal.index', compact('data'));
     }
 
@@ -44,6 +50,7 @@ class JurnalController extends Controller
         ]);
         $validasi['user_id'] = Auth::user()->id;
         Jurnal::create($validasi);
+        Alert::toast('Data Berhasil Di Simpan', 'success');
         return redirect('/jurnal');
     }
 
@@ -66,6 +73,7 @@ class JurnalController extends Controller
         $jur = Jurnal::findOrFail($id);
 
         // dd($jur);
+
         return view('jurnal.edit', compact('jur'));
     }
 
@@ -85,6 +93,7 @@ class JurnalController extends Controller
         ]);
 
         $jur->update($form);
+        Alert::toast('Data Berhasil Di Ubah', 'success');
         return redirect('/jurnal');
     }
 
@@ -98,6 +107,7 @@ class JurnalController extends Controller
         $jur = Jurnal::findOrFail($id);
 
         $jur->delete();
+        Alert::toast('Data Berhasil Di Hapus', 'success');
         return redirect('/jurnal');
     }
 }

@@ -43,6 +43,11 @@
                 <i class="fas fa-users"></i>
                 <span>Kelola Divisi</span></a>
         </li>
+        <li class="nav-item {{Request::is('gaji*') ? 'active' : ''}}">
+            <a class="nav-link" href="/gaji">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Kelola Gaji Karyawan</span></a>
+        </li>
     @endif
 
     @if (Auth::user()->role_id == 4)
@@ -66,8 +71,8 @@
                 <i class="fas fa-clipboard-check"></i>
                 <span>Tugas Individu</span></a>
         </li>
-        <li class="nav-item {{Request::is('tugas/tim*') ? 'active' : ''}}">
-            <a class="nav-link" href="/tugas/tim">
+        <li class="nav-item {{Request::is('divisi/tugas*') ? 'active' : ''}}">
+            <a class="nav-link" href="divisi/tugas">
                 <i class="fas fa-users"></i>
                 <span>Tugas Divisi</span></a>
         </li>
