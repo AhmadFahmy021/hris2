@@ -17,12 +17,16 @@ class profile
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $prof = ModelsProfile::all()->where('user_id','=',Auth::user()->id)->count();
-        // dd($prof);
-        if($prof > 0){
+        if(Auth::user()->role_id == 1){
             return $next($request);
-        } else{
-            return redirect('/profile/create');
+        }else{
+            $prof = ModelsProfile::all()->where('user_id','=',Auth::user()->id)->count();
+            // dd($prof);
+            if($prof > 0){
+                return $next($request);
+            } else{
+                return redirect('/profile/create');
+            }
         }
     }
 }
