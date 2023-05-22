@@ -19,7 +19,7 @@ class ProfileController extends Controller
         $userId = Auth::user()->id;
         $data = Profile::all()->where('user_id', $userId)->first();
         // dd($data->pos);
-            return view('profile.index',compact('data'));
+        return view('profile.index',compact('data'));
     }
 
     /**

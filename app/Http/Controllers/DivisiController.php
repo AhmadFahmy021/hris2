@@ -6,6 +6,7 @@ use App\Models\Divisi;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class DivisiController extends Controller
 {
@@ -16,10 +17,11 @@ class DivisiController extends Controller
     {
         //
         $data = Divisi::all();
-        
-        $profile = Profile::all()->where('divisi_id','=',$data);
-        dd($data);
-        return view('divisi.index', compact('data','profile'));
+        // dd($data);
+        $title = "Apakah Yakin Ingin Menghapus Data?";
+        $text = "Data yang di hapus tidak dapat di kembalikan lagi";
+        confirmDelete($title,$text);
+        return view('divisi.index', compact(['data']));
     }
 
     /**
@@ -42,6 +44,7 @@ class DivisiController extends Controller
             'divisi' => 'required'
         ]);
         Divisi::create($valid);
+        Alert::toast('Data Berhasil Di Simpan','success');
         return redirect('/divisi');
     }
 
@@ -75,6 +78,7 @@ class DivisiController extends Controller
 
         $valid = $request->validate(['divisi' => 'required']);
         $div->update($valid);
+        Alert::toast("Data Berhasil Di Ubah", "success");
         return redirect('/divisi');
     }
 
@@ -88,6 +92,7 @@ class DivisiController extends Controller
         $div = Divisi::findOrFail($del);
         // dd($del);
         $div->delete();
+        Alert::toast("Data Berhasil Di Hapus","success");
         return redirect('/divisi');
     }
 }

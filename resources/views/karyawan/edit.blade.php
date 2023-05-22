@@ -21,7 +21,8 @@
                 <div class="mb-3">
                     <label for="divisi" class="form-label">Divisi</label>
                     <select class="form-control" name="divisi">
-                        @foreach ($div as $d)                            
+                        <option value=""></option>                 
+                        @foreach ($div as $d)           
                             <option value="{{$d->id}}" @if ($data->divisi_id == $d->id)
                                 selected
                             @endif>{{$d->divisi}}</option>
@@ -31,6 +32,10 @@
                 <div class="mb-3">
                     <label for="jabatan" class="form-label">Jabatan</label>
                     <input type="text" class="form-control" id="jabatan" name="jabatan" value="{{$data->jabatan}}">
+                </div>
+                <div class="mb-3">
+                    <label for="jabatan" class="form-label">Tanggal Gajian</label>
+                    <input type="date" class="form-control" id="jabatan" name="date_gaji" value="{{$data->date_gaji}}">
                 </div>
                 <div class="mb-3">
                     <label for="nama" class="form-label">No. Hp</label>

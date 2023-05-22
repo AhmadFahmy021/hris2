@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TugasController extends Controller
 {
@@ -24,6 +25,9 @@ class TugasController extends Controller
             // dd($data);
         }
         // dd($divisi);
+        $title = "Yakin Data Akan Di Hapus?";
+        $text = "Data yang akan terhapus tidak bisa di kembalikan lagi";
+        confirmDelete($title,$text);
         return view('tugas.index',compact(['data']));
     }
 
@@ -54,6 +58,7 @@ class TugasController extends Controller
         ];
         // dd($data);
         Tugas::create($data);
+        Alert::toast('Data Berhasil Di Simpan', 'success');
         return redirect('/tugas');
     }
 
@@ -98,6 +103,7 @@ class TugasController extends Controller
             'selesai' => $request->selesai
         ];
         $tugas->update($form);
+        Alert::toast('Data Berhasil Di Ubah', 'success');
         return redirect('/tugas');
     }
 
@@ -115,7 +121,17 @@ class TugasController extends Controller
     }
 
     public function tim(){
-        $data = Tugas::all()->where('divisi_id', '!=', null);
+        if(Auth::user()->role_id == 2){
+            $data = Tugas::all()->where('divisi_id', '!=', null);
+        } else if(Auth::user()->role_id == 4){
+            $div = Profile::all()->where('user_id',Auth::user()->id)->first();
+            // dd($div);
+            // if ($div->devisi_id === null) {
+            //     $data = "";
+            // } else{
+                $data = Tugas::all()->where('divisi_id', '=', $div->divisi_id);
+            // }
+        }
         return view('tugas.tim', compact('data'));
     }
     public function tim_create(){
@@ -188,5 +204,27 @@ class TugasController extends Controller
         // dd($form);
 
         return redirect('/tugas');
+    }
+    public function selesai($id){
+        $id = Crypt::decrypt($id);
+        $data = Tugas::findOrFail($id);
+
+        $ubah = [
+            'status' => 'selesai'
+        ];        
+        $data->update($ubah);
+        // dd($ubah);
+        return redirect('/divisi/tugas');
+    }
+    public function tunda($id){
+        $id = Crypt::decrypt($id);
+        $data = Tugas::findOrFail($id);
+
+        $ubah = [
+            'status' => 'tunda'
+        ];        
+        $data->update($ubah);
+        // dd($ubah);
+        return redirect('/divisi/tugas');
     }
 }

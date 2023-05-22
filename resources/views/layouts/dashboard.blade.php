@@ -9,8 +9,9 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title>Dashboard HRIS </title>
 
+    {{-- <link rel="icon" href="/path/to/your/custom/favicon.ico" /> --}}
     <!-- Custom fonts for this template-->
     <link href="{{asset('dashboard/vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -129,6 +130,40 @@
     <!-- Page level custom scripts -->
     <script src="{{asset('dashboard/js/demo/datatables-demo.js')}}"></script>
 
+    {{-- Sweetalert --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript">
+    // Tombol Delete
+        $(function() {
+           $(document).on("click", "#delete", function(e){
+                e.preventDefault();
+                var nama = $(this).attr("data-nama")
+                var link =  $(this).attr("href");
+                Swal.fire({
+                    title: 'Yakin Data Akan Di Hapus?',
+                    text: "Data yang akan di hapus tidak dapat dikembalikan lagi",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.href = link,
+                        Swal.fire(
+                        'Deleted!',
+                        'Your file has been deleted.',
+                        'success'
+                        )
+                    }
+                    })
+           });
+        });
+    </script>
+
+    {{-- Sweet alert realrashid --}}
+    @yield('name')
+    
 </body>
 
 </html>

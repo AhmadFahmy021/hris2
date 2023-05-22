@@ -43,11 +43,14 @@
                                 @endphp
                                 <td>
                                     <a href="/jurnal/{{$jurnal}}/edit" class="btn btn-primary"><i class="fas fa-pen fa-sm text-white-50"></i> Edit</a>
-                                    <form action="/jurnal/{{$jurnal}}" method="post" class="d-inline">
+                                    {{-- <a href="/jurnal/{{$jurnal}}/hapus" class="btn btn-danger" data-confirm-delete="true" id="delete"> Delete</a> --}}
+                                    <a href="/jurnal/{{$jurnal}}" class="btn btn-danger" data-confirm-delete="true"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>
+                                    
+                                    {{-- <form action="/jurnal/{{$jurnal}}" id="delete" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</button>
-                                    </form>
+                                        <button class="btn btn-danger" data-confirm-delete="true"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</button>
+                                    </form> --}}
                                 </td>
                             </tr>
                             @endforeach
@@ -59,6 +62,7 @@
         </div>
     </div>
 </div>
+@include('sweetalert::alert')
 @endsection
 @section('karyawan')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -103,11 +107,12 @@
                                 @endphp
                                 <td>
                                     <a href="/jurnal/{{$jurnal}}/edit" class="btn btn-primary"><i class="fas fa-pen fa-sm text-white-50"></i> Edit</a>
-                                    <form action="/jurnal/{{$jurnal}}" method="post" class="d-inline">
+                                    <a href="/jurnal/{{$jurnal}}" class="btn btn-danger" data-confirm-delete="true"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</a>
+                                    {{-- <form action="/jurnal/{{$jurnal}}" method="post" class="d-inline">
                                         @csrf
                                         @method('DELETE')
-                                        <button class="btn btn-danger"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</button>
-                                    </form>
+                                        <button  class="btn btn-danger"><i class="fas fa-trash fa-sm text-white-50"></i> Delete</button>
+                                    </form> --}}
                                 </td>
                             </tr>
                             @endforeach
@@ -119,4 +124,5 @@
         </div>
     </div>
 </div>
+@include('sweetalert::alert')
 @endsection

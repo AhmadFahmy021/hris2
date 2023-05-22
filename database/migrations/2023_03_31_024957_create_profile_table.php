@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('pos');
             $table->foreignId('divisi_id')->nullable()->constrained('divisi')->onUpdate('cascade')->onDelete('cascade');
             $table->string('jabatan',50)->nullable();
+            $table->integer('gaji',45)->nullable();
+            $table->date('date_gaji')->nullable();
             $table->timestamps();
         });
     }

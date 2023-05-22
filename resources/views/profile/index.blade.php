@@ -221,7 +221,11 @@
                     </div>
                     <div class="mb-3">
                         <label for="exampleFormControlTextarea1" class="form-label">Divisi</label>
-                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" value="{{$data->divisi}}" disabled>
+                        <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="" @if ($data->divisi_id == null)
+                           
+                        @else
+                            value="{{$data->divisi->divisi}}"
+                        @endif disabled>
                     </div>
                 </div>
                 <div class="col-md-6">

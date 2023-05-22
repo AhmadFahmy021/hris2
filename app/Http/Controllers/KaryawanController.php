@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class KaryawanController extends Controller
 {
@@ -18,6 +19,9 @@ class KaryawanController extends Controller
     public function index(){
         $user = Auth::user()->id;
         $data = Profile::all()->where('user_id','!=', $user);
+        $title = "Apakah Anda Yakin Untuk Menghapus Data?";
+        $text = "Data yang di hapus tidak dapat di kembalikan lagi";
+        confirmDelete($title,$text);
         return view('karyawan.index', compact('data'));
     }
     public function detail($id){
@@ -42,19 +46,24 @@ class KaryawanController extends Controller
         $form = [
             'divisi_id' => $request->divisi,
             'jabatan' => $request->jabatan,
+            'gaji' => $request->gaji,
+            'date_gaji' => $request->date_gaji,
         ];
         $data->update($form);
+        Alert::toast('Data karyawan berhasil di ubah', 'success');
         return redirect('/karyawan');
     }
     public function delete($id){
         $id = Crypt::decrypt($id);
         $data = Profile::findOrFail($id);
-        $jurnal = Jurnal::findOrFail($data->user_id);
+        $jurnal = Jurnal::all()->where('user_id',$data->user_id);
+        // dd($jurnal);
         $user = User::findOrFail($data->user_id);
         // dd($user);
        
         $data->delete();
         $user->delete();
+        Alert::toast("Data berhasil di hapus", 'success');
         if($data == null || $jurnal == null){
             return redirect('logout');
         } else {
