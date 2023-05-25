@@ -67,5 +67,7 @@ class Kernel extends HttpKernel
         'hrd' => \App\Http\Middleware\Hrd::class,
         'date' => \App\Http\Middleware\DateRoute::class,
         'profile' => \App\Http\Middleware\profile::class,
+        'karyawan' => \App\Http\Middleware\Karyawan::class,
+        'owner' => \App\Http\Middleware\Owner::class,
     ];
 }

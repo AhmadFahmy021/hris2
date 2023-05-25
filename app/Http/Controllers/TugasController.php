@@ -18,7 +18,9 @@ class TugasController extends Controller
      */
     public function index()
     {
-        if(Auth::user()->role_id == 2){
+        if(Auth::user()->role_id == 1){
+            $data = Tugas::all()->where('user_id', '!=', null);
+        }else if(Auth::user()->role_id == 2){
             $data = Tugas::all()->where('user_id', '!=', null);
         } else if(Auth::user()->role_id == 4){
             $data = Tugas::all()->where('user_id','=',Auth::user()->id);
@@ -59,7 +61,12 @@ class TugasController extends Controller
         // dd($data);
         Tugas::create($data);
         Alert::toast('Data Berhasil Di Simpan', 'success');
-        return redirect('/tugas');
+        if(Auth::user()->role_id == 1){
+            $url = '/kelola/tugas/karyawan';
+        } else if(Auth::user()->role_id == 2){
+            $url = '/tugas';
+        }
+        return redirect($url);
     }
 
     /**
@@ -104,7 +111,12 @@ class TugasController extends Controller
         ];
         $tugas->update($form);
         Alert::toast('Data Berhasil Di Ubah', 'success');
-        return redirect('/tugas');
+        if(Auth::user()->role_id == 1){
+            $url = '/kelola/tugas/karyawan';
+        } else if(Auth::user()->role_id == 2){
+            $url = '/tugas';
+        }
+        return redirect($url);
     }
 
     /**
@@ -117,11 +129,18 @@ class TugasController extends Controller
         $tugas = Tugas::findOrFail($id);
         // dd($id);
         $tugas->delete();
-        return redirect('/tugas');
+        if(Auth::user()->role_id == 1){
+            $url = '/kelola/tugas/karyawan';
+        } else if(Auth::user()->role_id == 2){
+            $url = '/tugas';
+        }
+        return redirect($url);
     }
 
     public function tim(){
-        if(Auth::user()->role_id == 2){
+        if(Auth::user()->role_id == 1){
+            $data = $data = Tugas::all()->where('divisi_id', '!=', null);
+        }else if(Auth::user()->role_id == 2){
             $data = Tugas::all()->where('divisi_id', '!=', null);
         } else if(Auth::user()->role_id == 4){
             $div = Profile::all()->where('user_id',Auth::user()->id)->first();
@@ -193,7 +212,7 @@ class TugasController extends Controller
         $data->update($form);
         // dd($form);
 
-        return redirect('/tugas');
+        return redirect('/tugass');
     }
     public function tugas_tunda(Request $request, $id){
         $id = Crypt::decrypt($id);
@@ -203,7 +222,7 @@ class TugasController extends Controller
         $data->update($form);
         // dd($form);
 
-        return redirect('/tugas');
+        return redirect('/tugass');
     }
     public function selesai($id){
         $id = Crypt::decrypt($id);
@@ -214,7 +233,7 @@ class TugasController extends Controller
         ];        
         $data->update($ubah);
         // dd($ubah);
-        return redirect('/divisi/tugas');
+        return redirect('/divition/tugas');
     }
     public function tunda($id){
         $id = Crypt::decrypt($id);
@@ -225,6 +244,6 @@ class TugasController extends Controller
         ];        
         $data->update($ubah);
         // dd($ubah);
-        return redirect('/divisi/tugas');
+        return redirect('/divition/tugas');
     }
 }

@@ -8,18 +8,20 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class CutiController extends Controller
 {
     //
     public function index(){
-        if(Auth::user()->role_id == 2){
-            $data = Cuti::all()->where('status', null);
-            return view('cuti.index', compact('data'));
+        if(Auth::user()->role_id == 1){
+            $data = Cuti::all()->whereNull('status');
+        }else if(Auth::user()->role_id == 2){
+            $data = Cuti::all()->whereNull('status')->where('user_id','!=',Auth::user()->id);
         } else if(Auth::user()->role_id == 4) {
             $data = Cuti::all()->where('user_id', Auth::user()->id);
-            return view('cuti.index', compact('data'));
         }
+        return view('cuti.index', compact('data'));
     }
     public function index_cuti(){
         $data = Cuti::all()->where('user_id', Auth::user()->id);
@@ -65,7 +67,12 @@ class CutiController extends Controller
             // dd($data);
             $status = ['status' => 'setuju'];
             $data->update($status);
-            return redirect('/cuti');
+            if(Auth::user()->role_id == 1){
+                $url = '/kelola/cuti';
+            } else if(Auth::user()->role_id == 2){
+                $url = '/cuti';                
+            }
+            return redirect($url);
     }
     public function tolak($id){
             $id = Crypt::decrypt($id);
@@ -73,7 +80,12 @@ class CutiController extends Controller
             // dd($data);
             $status = ['status' => 'tolak'];
             $data->update($status);
-            return redirect('/cuti');
+            if(Auth::user()->role_id == 1){
+                $url = '/kelola/cuti';
+            } else if(Auth::user()->role_id == 2){
+                $url = '/cuti';                
+            }
+            return redirect($url);
     }
 
     public function edit($id){

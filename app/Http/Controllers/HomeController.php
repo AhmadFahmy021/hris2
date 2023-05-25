@@ -155,6 +155,39 @@ class HomeController extends Controller
     }
     public function owner()
     {
-        return view('homes');
+        $kar = Profile::all()->count();
+        $div = Divisi::all()->count();
+        $cuti = Cuti::all()->whereNull('status')->count();
+        $tugasS = Tugas::all()->where('status','selesai')->count();
+        $tugasK = Tugas::all()->where('user_id','!=',null )->whereNotNull('status');
+        $tugasD = Tugas::all()->where('divisi_id','!=',null)->whereNotNull('status');
+        $cutiK = Cuti::all()->where('status','=','setuju');
+        $cutiA = Cuti::all()->whereNull('status');
+        $tgs = Tugas::where('status', 'selesai')->where('user_id','!=' ,'null')
+            ->selectRaw('count(*) as jumlah, user_id')
+            ->groupBy('user_id')
+            ->get();
+            $user = User::all();
+    
+            $name = [];
+            $data = [];
+    
+            foreach ($tgs as $ts) {
+                $name[] = $ts->user->name;
+                $data[] = $ts->jumlah;
+            };
+            if(Jurnal::all() == null){
+                $jurnal = Jurnal::all()->count();
+            } else {
+                $jurnal = DB::select("SELECT j.user_id, u.name, COUNT(j.id) AS jumlah_jurnal
+                FROM (SELECT * FROM jurnal)j 
+                INNER JOIN (SELECT * FROm users)u ON j.user_id = u.id
+                GROUP BY j.user_id
+                ORDER BY jumlah_jurnal DESC");
+            }
+
+        // dd($tugasK);
+
+        return view('homes',compact(['kar','div','cuti','tugasS','tugasK','tugasD','cutiK','cutiA','name','data','jurnal']));
     }
 }

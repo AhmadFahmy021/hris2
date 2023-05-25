@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiController;
+use App\Http\Controllers\ATugasController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\DivisiController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\JurnalController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TugasController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -54,7 +56,7 @@ Route::middleware(['auth'])->group(function() {
     
     
         // Hak Akses untuk HRD
-        Route::middleware(['hrd'])->group(function() {
+        Route::middleware('hrd')->group(function() {
             
             // Route Karyawan
             Route::get('karyawan', [KaryawanController::class, 'index']);
@@ -73,8 +75,8 @@ Route::middleware(['auth'])->group(function() {
             Route::get('cuti/{id}/delete', [CutiController::class, 'delete']);
             Route::get('cuti/setuju', [CutiController::class, 'index_setuju']);
             Route::get('cuti/tolak', [CutiController::class, 'index_tolak']);
-            Route::get('cuti/{id}/setuju', [CutiController::class, 'setuju'])->middleware('hrd');
-            Route::get('cuti/{id}/tolak', [CutiController::class, 'tolak'])->middleware('hrd');
+            Route::get('cuti/{id}/setuju', [CutiController::class, 'setuju']);
+            Route::get('cuti/{id}/tolak', [CutiController::class, 'tolak']);
             // 
             Route::get('/tugass/tim', [TugasController::class, 'tim']);
             Route::get('/tugass/tim/create', [TugasController::class, 'tim_create']);
@@ -86,28 +88,87 @@ Route::middleware(['auth'])->group(function() {
             // Route Gaji
             Route::resource('gaji', GajiController::class);
 
+            // Route Tim
+            Route::resource('/divisi', DivisiController::class);
+            Route::resource('/tugas', TugasController::class);
+
+
+
         });
         
-        // Hak akses untuk karyawan
-        Route::get('pengcuti', [CutiController::class, 'index']);
-        Route::get('pengcuti/create', [CutiController::class, 'create']);
-        Route::post('pengcuti', [CutiController::class, 'store']);
-        Route::get('pengcuti/{id}/edit', [CutiController::class, 'edit']);
-        Route::post('pengcuti/{id}', [CutiController::class, 'update']);
-        Route::get('pengcuti/{id}/delete', [CutiController::class, 'delete']);
+        Route::middleware('owner')->group(function(){
+             // Route Karyawan
+             Route::get('kelola/karyawan', [KaryawanController::class, 'index']);
+             Route::get('kelola/karyawan/{id}/detail', [KaryawanController::class, 'detail']);
+             Route::get('kelola/karyawan/{id}/edit', [KaryawanController::class, 'edit']);
+             Route::post('kelola/karyawan/{id}', [KaryawanController::class, 'update']);
+             Route::get('kelola/karyawan/{id}/delete', [KaryawanController::class, 'delete']);
+         
+             // Route Cuti
+             Route::get('/kelola/cuti', [CutiController::class,'index']);
+             Route::get('/kelola/cuti/{id}/setuju', [CutiController::class,'setuju']);
+             Route::get('/kelola/cuti/{id}/tolak', [CutiController::class,'tolak']);
+            
+            //  Route Kelola Tugas Karyawan
+            Route::get('/kelola/tugas/karyawan', [TugasController::class,'index']);
+            Route::get('/kelola/tugas/karyawan/create', [TugasController::class,'create']);
+            Route::post('/kelola/tugas/karyawan', [TugasController::class,'store']);
+            Route::get('/kelola/tugas/karyawan/{id}/edit', [TugasController::class,'edit']);
+            Route::post('/kelola/tugas/karyawan/{id}', [TugasController::class,'update']);
+            Route::get('/kelola/tugas/karyawan/{id}/delete', [TugasController::class,'destroy']);
+
+
+             // Route Kelola Tugas Divisi
+             Route::get('/kelola/tugas/divisi', [TugasController::class, 'tim']);
+             Route::get('/kelola/tugas/divisi/create', [TugasController::class, 'tim_create']);
+             Route::get('/kelola/tugas/divisi/{id}/edit', [TugasController::class, 'tim_edit']);
+             Route::get('/kelola/tugas/divisi/{id}/delete', [TugasController::class, 'tim_destroy']);
+             Route::post('/kelola/tugas/divisi', [TugasController::class, 'tim_store']);
+             Route::post('/kelola/tugas/divisi/{id}', [TugasController::class, 'tim_update']);
+ 
+             // Route Gaji
+             Route::resource('kelola/gaji', GajiController::class);
+             // Route Role
+            Route::get('users', [RoleController::class, 'index']);
+            Route::get('users/{id}/edit', [RoleController::class, 'edit']);
+            Route::post('users/{id}', [RoleController::class, 'update']);
+            Route::get('users/{id}/delete', [RoleController::class, 'delete']);
+
+            // Route Pantau Jurnal
+            Route::get('pantau/jurnal', [JurnalController::class, 'pantau']);
+            Route::get('pantau/{id}/detail', [JurnalController::class, 'lihat']);
+
+            // Route Tim
+            Route::resource('kelola/divisi', DivisiController::class);
+        });
+
+        Route::middleware('karyawan')->group(function(){
+
+            // Hak akses untuk karyawan
+            Route::get('pengcuti', [CutiController::class, 'index']);
+            Route::get('pengcuti/create', [CutiController::class, 'create']);
+            Route::post('pengcuti', [CutiController::class, 'store']);
+            Route::get('pengcuti/{id}/edit', [CutiController::class, 'edit']);
+            Route::post('pengcuti/{id}', [CutiController::class, 'update']);
+            Route::get('pengcuti/{id}/delete', [CutiController::class, 'delete']);
+            
+            
+            // Tim 
+            Route::get('/tugass', [TugasController::class, 'index']);
+            // Route::post('/tugass/create', [TugasController::class, 'store']);
+            // Route::get('/tugass/{id}/edit', [TugasController::class, 'edit']);
+            // Route::post('/tugass/{id}', [TugasController::class, 'update']);
+            Route::get('/tugass/{id}/delete', [TugasController::class, 'destroy']);
+            Route::get('tugass/{id}/selesai', [TugasController::class, 'tugas_selesai']);
+            Route::get('tugass/{id}/tunda', [TugasController::class, 'tugas_tunda']);
+            Route::get('divition/tugas', [TugasController::class, 'tim']);
+            Route::get('divition/tugas/{id}/selesai',[TugasController::class,'selesai']);
+            Route::get('divition/tugas/{id}/tunda', [TugasController::class,'tunda']);
+
+            Route::resource('anggota/divisi/tugas', ATugasController::class);
+        });
         
-        // Route Tugas
-        Route::resource('/tugas', TugasController::class);
-        // Tim 
-        // Route::post('/tugass/tim/{id}', [TugasController::class, 'tim_update']);
-        Route::get('tugass/{id}/selesai', [TugasController::class, 'tugas_selesai']);
-        Route::get('tugass/{id}/tunda', [TugasController::class, 'tugas_tunda']);
-        Route::get('/divisi/tugas', [TugasController::class, 'tim']);
-        Route::get('divisi/tugas/{id}/selesai',[TugasController::class,'selesai']);
-        Route::get('divisi/tugas/{id}/tunda', [TugasController::class,'tunda']);
         
-        // Route Tim
-        Route::resource('/divisi', DivisiController::class);
     });
 });
 
