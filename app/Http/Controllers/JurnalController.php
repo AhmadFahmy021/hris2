@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Jurnal;
+use App\Models\User;
 // use Illuminate\Console\View\Components\Alert as ComponentsAlert;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -109,5 +110,21 @@ class JurnalController extends Controller
         $jur->delete();
         Alert::toast('Data Berhasil Di Hapus', 'success');
         return redirect('/jurnal');
+    }
+    public function pantau()
+    {
+        # Buat kode untuk menampilkan data users 
+        $data = User::all()->where('role_id','!=', 1);
+        // dd($data);
+        return view('jurnal.pantau',compact(['data']));
+    }
+    public function lihat($id)
+    {
+        //
+        $id = Crypt::decrypt($id);
+        $user = User::findOrFail($id);
+        $data = Jurnal::all()->where('user_id',$id);
+        // dd($data);
+        return view('jurnal.show', compact(['data','user']));
     }
 }

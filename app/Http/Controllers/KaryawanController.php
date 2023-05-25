@@ -18,7 +18,7 @@ class KaryawanController extends Controller
     //
     public function index(){
         $user = Auth::user()->id;
-        $data = Profile::all()->where('user_id','!=', $user);
+        $data = Profile::all();
         $title = "Apakah Anda Yakin Untuk Menghapus Data?";
         $text = "Data yang di hapus tidak dapat di kembalikan lagi";
         confirmDelete($title,$text);
@@ -51,7 +51,12 @@ class KaryawanController extends Controller
         ];
         $data->update($form);
         Alert::toast('Data karyawan berhasil di ubah', 'success');
-        return redirect('/karyawan');
+        if(Auth::user()->role_id == 1){
+            $red = '/kelola/karyawan';
+        }else if(Auth::user()->role_id == 2){
+            $red = '/karyawan';
+        }
+        return redirect($red);
     }
     public function delete($id){
         $id = Crypt::decrypt($id);
@@ -67,7 +72,12 @@ class KaryawanController extends Controller
         if($data == null || $jurnal == null){
             return redirect('logout');
         } else {
-            return redirect('/karyawan');
+            if(Auth::user()->role_id == 1){
+                $red = '/kelola/karyawan';
+            }else if(Auth::user()->role_id == 2){
+                $red = '/karyawan';
+            }
+            return redirect($red);
         }
     }
 }

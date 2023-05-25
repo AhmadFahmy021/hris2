@@ -50,39 +50,56 @@
         </li>
     @elseif (Auth::user()->role_id == 1)
         <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
-            <a class="nav-link" href="/home">
+            <a class="nav-link" href="/homes">
                 <i class="fas fa-home"></i>
                 <span>Dashboard</span></a>
         </li>
-        <li class="nav-item {{Request::is('jurnal*') ? 'active' : ''}}">
-            <a class="nav-link" href="/jurnal">
-                <i class="fas fa-clipboard"></i>
-                <span>Jurnal Harian</span></a>
+        <li class="nav-item {{Request::is('users*') ? 'active' : ''}}">
+            <a class="nav-link" href="/users">
+                <i class="fas fa-users-cog"></i>
+                <span>Kelola Users</span>
+            </a>
         </li>
-        <li class="nav-item {{Request::is('karyawan*') ? 'active' : ''}}">
-            <a class="nav-link" href="/karyawan">
-                <i class="fas fa-user-tie"></i>
-                <span>Jumlah Karyawan</span></a>
+        <li class="nav-item {{Request::is('kelola/gaji*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/gaji">
+                <i class="fas fa-money-bill-wave"></i>  
+                <span>Kelola Gaji Karyawan</span>
+            </a>
         </li>
-        <li class="nav-item {{Request::is('cuti*') ? 'active' : ''}}">
-            <a class="nav-link" href="/cuti">
-                <i class="fas fa-calendar"></i>
-                <span>Pengajuan Cuti</span></a>
+        <li class="nav-item {{Request::is('pantau*') ? 'active' : ''}}">
+            <a class="nav-link" href="/pantau/jurnal">
+                <i class="fas fa-book"></i>
+                <span>Pantau Jurnal Karyawan</span>
+            </a>
         </li>
-        <li class="nav-item {{Request::is('tugas*') ? 'active' : ''}}">
-            <a class="nav-link" href="/tugas">
-                <i class="fas fa-clipboard-check"></i>
-                <span>Pembagian Tugas</span></a>
+        <li class="nav-item {{Request::is('kelola/tugas/karyawan*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/tugas/karyawan">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Pembagian Tugas Karyawan</span>
+            </a>
         </li>
-        <li class="nav-item {{Request::is('divisi*') ? 'active' : ''}}">
-            <a class="nav-link" href="/divisi">
+        <li class="nav-item {{Request::is('kelola/tugas/divisi*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/tugas/divisi">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Pembagian Tugas Divisi</span>
+            </a>
+        </li>
+        <li class="nav-item {{Request::is('kelola/divisi*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/divisi">
                 <i class="fas fa-users"></i>
                 <span>Kelola Divisi</span></a>
         </li>
-        <li class="nav-item {{Request::is('gaji*') ? 'active' : ''}}">
-            <a class="nav-link" href="/gaji">
-                <i class="fas fa-money-bill-wave"></i>
-                <span>Kelola Gaji Karyawan</span></a>
+        <li class="nav-item {{Request::is('kelola/cuti*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/cuti">
+                <i class="fas fa-calendar"></i>
+                <span>Pengajuan Cuti</span>
+            </a>
+        </li>
+        <li class="nav-item {{Request::is('kelola/karyawan*') ? 'active' : ''}}">
+            <a class="nav-link" href="/kelola/karyawan">
+                <i class="fas fa-user-tie"></i>
+                <span>Jumlah Karyawan</span>
+            </a>
         </li>
     @elseif (Auth::user()->role_id == 4)
         <li class="nav-item {{Request::is('home*') ? 'active' : ''}}">
@@ -101,14 +118,20 @@
                 <span>Pengajuan Cuti</span></a>
         </li>
         <li class="nav-item {{Request::is('tugas*') ? 'active' : ''}}">
-            <a class="nav-link" href="/tugas">
+            <a class="nav-link" href="/tugass">
                 <i class="fas fa-clipboard-check"></i>
                 <span>Tugas Individu</span></a>
         </li>
-        <li class="nav-item {{Request::is('divisi/tugas*') ? 'active' : ''}}">
-            <a class="nav-link" href="divisi/tugas">
+        <li class="nav-item {{Request::is('divition/tugas*') ? 'active' : ''}}">
+            <a class="nav-link" href="divition/tugas">
                 <i class="fas fa-users"></i>
-                <span>Tugas Divisi</span></a>
+                <span>Tugas Divisi</span>
+            </a>
+        </li>
+        <li class="nav-item {{Request::is('anggota/divisi*') ? 'active' : ''}}">
+            <a class="nav-link" href="/anggota/divisi/tugas">
+                <i class="fas fa-users"></i>
+                <span>Bagi Tugas Anggota Divisi</span></a>
         </li>
     @endif
 
